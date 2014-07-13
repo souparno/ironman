@@ -1,5 +1,5 @@
 ironman
 =======
 
-an object oriented javascript framework
+an object oriented javascript Inheritance framework
 
