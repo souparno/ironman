@@ -4,6 +4,7 @@ var Class = {
     
     Create: function(o) {
         var F = function() {
+            this.init();
         };
         F.Extend = this.Extend;
         for (var property in o) {
@@ -13,19 +14,19 @@ var Class = {
     },
             
     Extend: function(o) {
-        var F=function(){            
-        };
-        F.Extend=this.Extend;
+        var F=Class.Create(o);
         F.prototype['super']=new this;
-        for (var property in o) {
-            F.prototype[property] = o[property];
-        }        
         return F;
     }
 };
 
 
 var MusicInstrument=Class.Create({
+    
+    init:function(){
+      this.me='Bonnie';
+      console.log("Hello i am the parent constructor");
+    },
     
     sayHello:function(){
         console.log("I am a musical instrument");
@@ -36,6 +37,10 @@ var MusicInstrument=Class.Create({
 
 var Guitar=MusicInstrument.Extend({
     
+    init:function(){
+      console.log('Hello i am the child constructor');  
+    },
+    
     sayHello:function(){
         this.super.sayHello();
         console.log("Hello i am a guitar");
@@ -43,6 +48,9 @@ var Guitar=MusicInstrument.Extend({
     
 });
 
-
+var mi=new MusicInstrument();
+console.log(mi.me);
 var guitar=new Guitar();
+console.log(Guitar instanceof MusicInstrument);
 guitar.sayHello();
+console.log(guitar.super.me);
