@@ -3,20 +3,22 @@
 var Class = {
     
     Create: function(o) {
-        var F = function() {
-            this.init();
-        };
-        F.Extend = this.Extend;
-        for (var property in o) {
-            F.prototype[property] = o[property];
-        }
-        return F;
+        
+        return this.Extend.call(function(){
+            
+        },o);
     },
             
     Extend: function(o) {
-        var F=Class.Create(o);
-        F.prototype['super']=new this;
-        return F;
+
+        var _prototype=new this();
+        for(var property in o){
+            _prototype[property]=o[property]
+        }
+        var F=function(){};
+        F.prototype=_prototype;
+        F.Extend=Class.Extend;
+        return F;        
     }
 };
 
