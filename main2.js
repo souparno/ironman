@@ -1,10 +1,9 @@
 "use strict";
-    
+
 var Class = {
     
     Create: function(o) {
         var F = function() {
-            this.init();
         };
         F.Extend = this.Extend;
         for (var property in o) {
@@ -14,9 +13,10 @@ var Class = {
     },
             
     Extend: function(o) {
-        var F=Class.Create(o);
-        F.prototype['super']=new this;
-        return F;
+        for (var property in o) {
+            this.prototype[property] = o[property];
+        }
+        return this;
     }
 };
 
@@ -38,8 +38,8 @@ var parent = Class.Create({
 
 var child = parent.Extend({
     init: function() {
-        //this._super();
-        //console.log(this.a);
+        this._super();
+        console.log(this.a);
         console.log('Hello i am the child constructor');
     },
     def: function() {
