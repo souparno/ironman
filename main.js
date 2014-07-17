@@ -1,86 +1,43 @@
 "use strict";
-    
-var Class = {
-    
-    Create: function(o) {
-        
-        return this.Extend.call(function(){
-            
-        },o);
-    },
-            
-    Extend: function(o) {
 
-        var _prototype=new this();
-        for(var property in o){
-            _prototype[property]=o[property]
+var Class = {
+    Create: function(o) {
+        return this.Extend.call(function() {
+        }, o);
+    },
+    Extend: function(o) {
+        var _prototype = new this();
+        for (var property in o) {
+            _prototype[property] = o[property]
         }
-        var F=function(){};
-        F.prototype=_prototype;
-        F.Extend=Class.Extend;
-        return F;        
+        var F = function() {
+        };
+        F.prototype = _prototype;
+        F.prototype['super'] = new this();
+        F.Extend = Class.Extend;
+        return F;
     }
 };
 
 
-var parent = Class.Create({
-    init: function() {
-        this.a = 2;
-        console.log('Hello i am the parent constructor');
-    },
-    abc: function() {
-        //this.def();
-        console.log("Hello this is the parent method");
-        //this.def();
+//Example
+var Vehicle = Class.Create({
+    init: function(wheels) {
+        this.wheels = wheels;
     }
-
-
-
 });
 
-var child = parent.Extend({
-    init: function() {
-        //this._super();
-        //console.log(this.a);
-        console.log('Hello i am the child constructor');
+var Truck = Vehicle.Extend({
+    init: function(hp, wheels) {
+        this.super.init(wheels);
+        this.horsepower = hp;
     },
-    def: function() {
-        //this.abc();
-        console.log("Hello form child");
+    printInfo: function() {
+        console.log('I am a truck and I have ' + this.super.wheels + ' wheels and ' + this.horsepower + ' hp.');
     }
-
 });
 
-
-var obj = new parent();
-obj.abc();
-var obj1 =new child();
-console.log("parent instance of child :-");
-console.log(obj instanceof child);
-console.log("child instance of parent :-");
-console.log(obj1 instanceof parent);
-
-
-//console.log(Class);
-//console.log(parent);
-
-console.log("=== parent proto===")
-for (var p in parent.prototype) {
-    console.log(p);
-    console.log(parent.prototype[p]);
-    console.log("=======");
-}
-
-/*
-console.log("===child==");
-
-for (var p in child) {
-    console.log(p);
-} */
-console.log("==child proto ===");
-for (var p in child.prototype) {
-    console.log(p);
-    console.log(child.prototype[p]);
-    console.log("=======");
-}
-//console.log(child);
+//var t = new Truck();
+var t = new Truck();
+t.init(350, 4);
+t.printInfo();
