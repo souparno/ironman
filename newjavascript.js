@@ -72,13 +72,19 @@ var parent = Class.extend({
         this.a = 2;
         console.log('Hello i am the parent constructor');
     },
+            
+    
+            
     abc: function() {
         //this.def();
         console.log("Hello this is the parent method");
         //this.def();
+    },
+
+ 
+    def:function(){
+      console.log("This is the parenty def method");  
     }
-
-
 
 });
 
@@ -89,7 +95,7 @@ var child = parent.extend({
         console.log('Hello i am the child constructor');
     },
     def: function() {
-        //this.abc();
+        this._super();
         console.log("Hello form child");
     }
 
@@ -99,6 +105,7 @@ var child = parent.extend({
 var obj = new parent();
 obj.abc();
 var obj1 =new child();
+obj1.def();
 console.log("parent instance of child :-");
 console.log(obj instanceof child);
 console.log("child instance of parent :-");

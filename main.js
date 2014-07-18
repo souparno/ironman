@@ -6,38 +6,76 @@ var Class = {
         }, o);
     },
     Extend: function(o) {
-        var _prototype = new this();
+        /*
+         * 
+         * Getting the object of the base class ,
+         * and extending the object.
+         */
+        var _base_obj = new this();
         for (var property in o) {
-            _prototype[property] = o[property]
+            _base_obj[property] = o[property];
         }
+
         var F = function() {
+            if (this.init())
+                this.init();
+
         };
-        F.prototype = _prototype;
-        F.prototype['super'] = new this();
+        F.prototype = _base_obj;
+        F.prototype['super'] = _base_obj;
         F.Extend = Class.Extend;
         return F;
     }
 };
 
 
-//Example
-var Vehicle = Class.Create({
-    init: function(wheels) {
-        this.wheels = wheels;
-    }
-});
+//Example 
 
-var Truck = Vehicle.Extend({
-    init: function(hp, wheels) {
-        this.super.init(wheels);
-        this.horsepower = hp;
+var parent = Class.Create({
+    init: function() {
+        this.a = 2;
+        console.log('Hello i am the parent constructor');
+
     },
-    printInfo: function() {
-        console.log('I am a truck and I have ' + this.super.wheels + ' wheels and ' + this.horsepower + ' hp.');
+    abc: function() {
+        //this.def();
+        console.log("Hello this is the parent method");
+        //this.def();
     }
 });
 
-//var t = new Truck();
-var t = new Truck();
-t.init(350, 4);
-t.printInfo();
+var child = parent.Extend({
+    init: function() {
+        console.log(this.a);
+        console.log('Hello i am the child constructor');
+    },
+    def: function() {
+        this.super.abc();
+        console.log(this.a);
+        console.log("Hello form child");
+    }
+
+});
+
+var obj1 = new child();
+obj1.def();
+
+
+console.log("=== parent proto===")
+for (var p in parent.prototype) {
+    console.log(p);
+    console.log(parent.prototype[p]);
+    console.log("=======");
+}
+
+
+console.log("==child proto ===");
+for (var p in child.prototype) {
+    console.log(p);
+    console.log(child.prototype[p]);
+    console.log("=======");
+}
+
+
+
+
