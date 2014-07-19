@@ -1,5 +1,9 @@
 "use strict";
-
+/*
+ * 
+ * @type Boolean
+ * stops invoking the constructor function during the operation
+ */
 var initializing = false;
 
 var Class = {
@@ -55,11 +59,13 @@ var Class = {
                             this._super = _super[property];
 
                             /*
-                             * methiod execution is bind to this._super property
+                             * method execution is bind to this._super property
                              * the property is then restored to the inital value
                              */
-                            fn.apply(this, arguments);
+                            var ret = fn.apply(this, arguments);
                             this._super = tmp;
+
+                            return ret;
                         };
                     }(property, o[property])) : o[property];
 
@@ -87,7 +93,38 @@ var Class = {
 };
 
 
-//Example 
+/*
+ * 
+ * Examples ===============================================================================
+ */
+
+
+// Class 1
+
+var Person = Class.Create({
+    init: function(isDancing) {
+        this.dancing = isDancing;
+    },
+    dance: function() {
+        return this.dancing;
+    }
+});
+
+var Ninja = Person.Extend({
+    init: function() {
+        this._super(false);
+    },
+    dance: function() {
+        // Call the inherited version of dance()
+        return this._super();
+    },
+    swingSword: function() {
+        return true;
+    }
+});
+
+
+// Class 2
 
 var Vehicle = Class.Create({
     init: function(wheels) {
@@ -106,7 +143,30 @@ var Truck = Vehicle.Extend({
     }
 });
 
-var t = new Truck(350,4);
-t.printInfo();
 
 
+var p = new Person(true);
+console.log("Person Dance " + p.dance()); // => true
+
+var n = new Ninja();
+console.log("Ninja Dance " + n.dance()); // => false
+console.log("Ninja Swing Sword " + n.swingSword()); // => true
+
+
+
+var t = new Truck(350, 4);
+t.printInfo(); // =>I am a truck and I have 4 wheels and 350 hp. 
+
+
+console.log("p instanceof Person");
+console.log(p instanceof Person);
+console.log("n instanceof Person");
+console.log(n instanceof Person);
+console.log("==check to see if theere is a leak in the inheritance ==");
+console.log("p instanceof Ninja");
+console.log(p instanceof Ninja);
+console.log("t instanceof Vehicle");
+console.log(t instanceof Vehicle);
+console.log("==check to see if there is a leak in the class==");
+console.log(p instanceof Vehicle);
+console.log(t instanceof Person);
