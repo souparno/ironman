@@ -53,7 +53,7 @@ var Class = {
                         return function() {
                             /*
                              * 
-                             * _super property hold the function of the base class
+                             * _super property holds the function of the base class
                              */
                             var tmp = this._super;
                             this._super = _super[property];
