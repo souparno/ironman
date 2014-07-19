@@ -67,72 +67,31 @@
 })();
 
 
-var parent = Class.extend({
-    init: function() {
-        this.a = 2;
-        console.log('Hello i am the parent constructor');
-    },
-            
-    
-            
-    abc: function() {
-        //this.def();
-        console.log("Hello this is the parent method");
-        //this.def();
-    },
+//Example 
 
- 
-    def:function(){
-      console.log("This is the parenty def method");  
-    }
-
-});
-
-var child = parent.extend({
-    init: function() {
-        this._super();
-        console.log(this.a);
-        console.log('Hello i am the child constructor');
-    },
-    def: function() {
-        this._super();
-        console.log("Hello form child");
-    }
-
+var Vehicle = Class.extend({
+  init: function(wheels) {
+    this.wheels = wheels;
+    console.log("Parent constructor called");
+  },
+  
+  print:function(){
+      console.log(this.wheels);
+  }
+  
 });
 
 
-var obj = new parent();
-obj.abc();
-var obj1 =new child();
-obj1.def();
-console.log("parent instance of child :-");
-console.log(obj instanceof child);
-console.log("child instance of parent :-");
-console.log(obj1 instanceof parent);
-//console.log(Class);
-//console.log(parent);
+
+var v=new Vehicle(4);
+v.print();
+
 
 console.log("=== parent proto===")
-for (var p in parent.prototype) {
+for (var p in Vehicle.prototype) {
     console.log(p);
-    console.log(parent.prototype[p]);
+    console.log(Vehicle.prototype[p]);
     console.log("=======");
 }
-
-/*
-console.log("===child==");
-
-for (var p in child) {
-    console.log(p);
-} */
-console.log("==child proto ===");
-for (var p in child.prototype) {
-    console.log(p);
-    console.log(child.prototype[p]);
-    console.log("=======");
-}
-//console.log(child);
-
 
 

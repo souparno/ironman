@@ -4,7 +4,7 @@ var initializing = false;
 
 var Class = {
     Create: function(o) {
-        
+
         /*
          * 
          * calls the extended property of the Class object 
@@ -17,6 +17,14 @@ var Class = {
 
     },
     Extend: function(o) {
+
+        /*
+         * 
+         * Gets the prototype of the base class
+         */
+        var _super = this.prototype;
+
+
         /*
          * 
          * Getting the object of the base class ,
@@ -32,22 +40,47 @@ var Class = {
          * Adding the new object properties to the base object property
          */
         for (var property in o) {
-            _base_obj[property] = o[property];
-            
+            /*
+             * 
+             * check if there is a same function expression present in the base class
+             */
+            _base_obj[property] = typeof o[property] === "function" && typeof _super[property] === "function" ?
+                    (function(property, fn) {
+                        return function() {
+                            /*
+                             * 
+                             * _super property hold the function of the base class
+                             */
+                            var tmp = this._super;
+                            this._super = _super[property];
+
+                            /*
+                             * methiod execution is bind to this._super property
+                             * the property is then restored to the inital value
+                             */
+                            fn.apply(this, arguments);
+                            this._super = tmp;
+                        };
+                    }(property, o[property])) : o[property];
+
         }
 
         /*
          * 
          * Encaptutalating the object withing a new function variable,
-         * and returning the variable
+         * and return the variable
          */
         var F = function() {
+
+            /*
+             * 
+             * calls the class constructor when a new object is created
+             */
             if (!initializing && this.init)
-                this.init();
+                this.init.apply(this, arguments);
 
         };
         F.prototype = _base_obj;
-        F.prototype['super'] = _base_obj;
         F.Extend = this.Extend;
         return F;
     }
@@ -56,53 +89,24 @@ var Class = {
 
 //Example 
 
-var parent = Class.Create({
-    init: function() {
-        this.a = 2;
-        console.log('Hello i am the parent constructor');
-
-    },
-    abc: function() {
-        //this.def();
-        console.log("Hello this is the parent method");
-        //this.def();
+var Vehicle = Class.Create({
+    init: function(wheels) {
+        this.wheels = wheels;
     }
 });
 
-var child = parent.Extend({
-    init: function() {
-        console.log(this.a);
-        this.a = 4;
-        console.log(this.a);
-        console.log('Hello i am the child constructor');
-    },
-    def: function() {
-        this.super.abc;
-        console.log(this.super.a);
-        console.log("Hello form child");
-    }
+var Truck = Vehicle.Extend({
+    init: function(hp, wheels) {
+        this._super(wheels);
+        this.horsepower = hp;
 
+    },
+    printInfo: function() {
+        console.log('I am a truck and I have ' + this.wheels + ' wheels and ' + this.horsepower + ' hp.');
+    }
 });
 
-var obj1 = new child();
-obj1.def();
-
-
-console.log("=== parent proto===")
-for (var p in parent.prototype) {
-    console.log(p);
-    console.log(parent.prototype[p]);
-    console.log("=======");
-}
-
-
-console.log("==child proto ===");
-for (var p in child.prototype) {
-    console.log(p);
-    console.log(child.prototype[p]);
-    console.log("=======");
-}
-
-
+var t = new Truck(350,4);
+t.printInfo();
 
 
