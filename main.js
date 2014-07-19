@@ -29,11 +29,11 @@ var Class = {
 
         /*
          * 
-         * Extending the base_object property with  
-         * the new object properties.
+         * Adding the new object properties to the base object property
          */
         for (var property in o) {
             _base_obj[property] = o[property];
+            
         }
 
         /*
