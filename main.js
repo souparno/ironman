@@ -1,29 +1,54 @@
 "use strict";
 
+var initializing = false;
+
 var Class = {
     Create: function(o) {
-        return this.Extend.call(function() {
-        }, o);
+        
+        /*
+         * 
+         * calls the extended property of the Class object 
+         * though a new function varibale.
+         */
+        var F = function() {
+        };
+        F.Extend = this.Extend;
+        return F.Extend(o);
+
     },
     Extend: function(o) {
         /*
          * 
          * Getting the object of the base class ,
-         * and extending the object.
+         * without invoking the constructor function
          */
+        initializing = true;
         var _base_obj = new this();
+        initializing = false;
+
+
+        /*
+         * 
+         * Extending the base_object property with  
+         * the new object properties.
+         */
         for (var property in o) {
             _base_obj[property] = o[property];
         }
 
+        /*
+         * 
+         * Encaptutalating the object withing a new function variable,
+         * and returning the variable
+         */
         var F = function() {
-            if (this.init())
+            if (!initializing && this.init)
                 this.init();
 
         };
         F.prototype = _base_obj;
         F.prototype['super'] = _base_obj;
-        F.Extend = Class.Extend;
+        F.Extend = this.Extend;
         return F;
     }
 };
@@ -47,11 +72,13 @@ var parent = Class.Create({
 var child = parent.Extend({
     init: function() {
         console.log(this.a);
+        this.a = 4;
+        console.log(this.a);
         console.log('Hello i am the child constructor');
     },
     def: function() {
-        this.super.abc();
-        console.log(this.a);
+        this.super.abc;
+        console.log(this.super.a);
         console.log("Hello form child");
     }
 
