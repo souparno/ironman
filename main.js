@@ -1,33 +1,31 @@
 'use strict';
 
-var initializing = false;
-
 var Class = {
 
+  extending: false,
+
   Create: function(o) {
-    var F = function() {
-    };
+    var F = function() {};
+
     F.Extend = this.Extend;
     return F.Extend(o);
   },
 
   Extend: function(o) {
     var _util = {
-      isFunc: function (fn){
-        if(typeof fn === 'function'){
+      isFunc: function (fn) {
+        if (typeof fn === 'function') {
           return true;
-        } else {
-          return false;
         }
+        return false;
       },
       duplicateFunc: function (func1, func2) {
-        if(this.isFunc(func1) && this.isFunc(func2)){
+        if (this.isFunc(func1) && this.isFunc(func2)) {
           return true;
-        } else {
-          return false;
         }
+        return false;
       },
-      overrideFunc: function (super_fn, base_fn){
+      overrideFunc: function (super_fn, base_fn) {
         return function() {
           var tmp = this._super,
             ret;
@@ -45,8 +43,8 @@ var Class = {
 
           func1 = super_obj[property];
           func2 = base_obj[property];
-          
-          if( this.duplicateFunc(func1,func2)){
+
+          if (this.duplicateFunc(func1, func2)) {
             func1 = this.overrideFunc(func1, func2);
           } else {
             func1 = func2;
@@ -55,18 +53,15 @@ var Class = {
         }
         return super_obj;
       }
-    },
-    F;    
-
-    F = function() {
-      if (!initializing && this.init) {
+    }, F = function() {
+      if (!Class.extending && this.init) {
         this.init.apply(this, arguments);
       }
     };
-    
-    initializing = true;
+
+    Class.extending = true;
     F.prototype = _util.mergeObj(new this(), o);
-    initializing = false;
+    Class.extending = false;
 
     F.Extend = this.Extend;
     return F;
