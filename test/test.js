@@ -19,41 +19,66 @@ QUnit.test("Class.create should call the Extend function", function (assert) {
   stub_class_extend.restore();
 });
 
-QUnit.test("Class should return a function appending " +
-  "all the function expressions to its prototype property", function (assert) {
-    var testClass = Class.Create({
-        init: function() { },
-        dance: function() { }
-      }),
-      prop_array = [],
-      prop;
+QUnit.test('Class.create should append functions ' +
+    'to its instance', function (assert) {
+      var testClass = Class.Create({
+          init: function() { },
+          dance: function() { }
+        }),
+        prop_array = [],
+        prop;
 
-    for (prop in testClass.prototype) {
-      prop_array.push(prop);
-    }
-    assert.equal(prop_array.length, 2);
-    assert.equal(prop_array[0], 'init');
-    assert.equal(prop_array[1], 'dance');
+      for (prop in new testClass()) {
+        prop_array.push(prop);
+      }
+      assert.equal(prop_array.length, 2);
+      assert.equal(prop_array[0], 'init');
+      assert.equal(prop_array[1], 'dance');
 });
 
 QUnit.test("base class should extend from " +
   "the super class by appending the super class functions " +
   "with the base class functions and returning it", function (assert) {
     var test_super_class = Class.Create({
-        dance: function() {}
+        dance: function() {},
+        laugh: function() {},
       }),
       test_base_class = test_super_class.Extend({
-        dance: function () {}
+        sing: function() {},
       }),
       prop_array = [],
       prop;
 
-    for (prop in test_base_class.prototype) {
+
+    for (prop in new test_base_class()) {
       prop_array.push(prop);
     }
+    
+    assert.equal(prop_array.length, 3);
+    assert.equal(prop_array[0], 'sing');
+    assert.equal(prop_array[1], 'dance');
+    assert.equal(prop_array[2], 'laugh');
+});
 
-    assert.equal(prop_array.length, 1);
-    assert.equal(prop_array[0], 'dance');
+QUnit.test('base class methods should not leak into ' +
+    'the instance of super class', function (assert) {
+      var test_super_class = Class.Create({
+          dance: function() {},
+          laugh: function() {},
+        }),
+        prop_array = [],
+        prop;
+
+      test_super_class.Extend({
+          sing: function() {}
+      });      
+
+      for (prop in new test_super_class()) {
+        prop_array.push(prop);
+      }
+
+      assert.equal(prop_array.length, 2);
+      assert.equal(prop_array[0], 'dance');
 });
 
 QUnit.test("base class function should append the superclass functions " +
@@ -75,10 +100,9 @@ QUnit.test("base class function should append the superclass functions " +
         sing: function () {
           
         }        
-      }),
-      obj;
-    
-    obj = new test_base_class();
+      });
+      obj= new test_base_class();
+
     obj.dance();
     assert.equal(test_variable, true);
 });

@@ -12,30 +12,26 @@ var Class = {
   },
 
   Extend: function(o) {
-    var _super = this.prototype,
-      _base_obj,
-      property,
-      F;
+    var supr, property, F;
 
     initializing = true;
-    _base_obj = new this();
+    supr = new this();
     initializing = false;
 
     for (property in o) {
-
-      _base_obj[property] = typeof o[property] === 'function'
-        && typeof _super[property] === 'function' ?
-          (function(prop, fn) {
+      supr[property] = typeof o[property] === 'function'
+        && typeof supr[property] === 'function' ?
+          (function(super_fn, base_fn) {
             return function() {
-              var tmp = this._super, ret;
+              var tmp = this._super,
+                ret;
 
-              this._super = _super[prop];
-              ret = fn.apply(this, arguments);
+              this._super = super_fn;
+              ret = base_fn.apply(this, arguments);
               this._super = tmp;
               return ret;
             };
-          }(property, o[property])) : o[property];
-
+          }(supr[property],o[property])) : o[property];
     }
 
     F = function() {
@@ -43,7 +39,8 @@ var Class = {
         this.init.apply(this, arguments);
       }
     };
-    F.prototype = _base_obj;
+
+    F.prototype = supr;
     F.Extend = this.Extend;
     return F;
   }
