@@ -12,35 +12,62 @@ var Class = {
   },
 
   Extend: function(o) {
-    var supr, property, F;
+    var _util = {
+      isFunc: function (fn){
+        if(typeof fn === 'function'){
+          return true;
+        } else {
+          return false;
+        }
+      },
+      duplicateFunc: function (func1, func2) {
+        if(this.isFunc(func1) && this.isFunc(func2)){
+          return true;
+        } else {
+          return false;
+        }
+      },
+      overrideFunc: function (super_fn, base_fn){
+        return function() {
+          var tmp = this._super,
+            ret;
 
-    initializing = true;
-    supr = new this();
-    initializing = false;
+          this._super = super_fn;
+          ret = base_fn.apply(this, arguments);
+          this._super = tmp;
+          return ret;
+        };
+      },
+      mergeObj: function (super_obj, base_obj) {
+        var property, func1, func2;
 
-    for (property in o) {
-      supr[property] = typeof o[property] === 'function'
-        && typeof supr[property] === 'function' ?
-          (function(super_fn, base_fn) {
-            return function() {
-              var tmp = this._super,
-                ret;
+        for (property in base_obj) {
 
-              this._super = super_fn;
-              ret = base_fn.apply(this, arguments);
-              this._super = tmp;
-              return ret;
-            };
-          }(supr[property],o[property])) : o[property];
-    }
+          func1 = super_obj[property];
+          func2 = base_obj[property];
+          
+          if( this.duplicateFunc(func1,func2)){
+            func1 = this.overrideFunc(func1, func2);
+          } else {
+            func1 = func2;
+          }
+          super_obj[property] = func1;
+        }
+        return super_obj;
+      }
+    },
+    F;    
 
     F = function() {
       if (!initializing && this.init) {
         this.init.apply(this, arguments);
       }
     };
+    
+    initializing = true;
+    F.prototype = _util.mergeObj(new this(), o);
+    initializing = false;
 
-    F.prototype = supr;
     F.Extend = this.Extend;
     return F;
   }
