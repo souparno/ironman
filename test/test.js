@@ -63,20 +63,24 @@ QUnit.test("base class function should append the superclass functions " +
       test_super_class = Class.Create({
         dance: function() { 
          test_variable = true;
+        },
+        kick:function () {
+          
         }
       }),
       test_base_class = test_super_class.Extend({
         dance: function () {
           this._super();
-        }
+        },
+        sing: function () {
+          
+        }        
       }),
       obj;
     
     obj = new test_base_class();
     obj.dance();
     assert.equal(test_variable, true);
-    //console.log("Hello i am here =====");
-    //console.log(obj.dance);
 });
 
 QUnit.test("base class object should be instance of super class", function (assert) {
@@ -137,4 +141,60 @@ QUnit.test("super class constructor should not be called while " +
   
   supr.Extend({});
   assert.equal(test_var, false);
+});
+
+QUnit.test('Real World use scenerio testing 1', function (assert) {
+
+  var Person = Class.Create({
+    init: function(isDancing) {
+      this.dancing = isDancing;
+    },
+    dance: function() {
+      return this.dancing;
+    }
+  });
+
+  var Ninja = Person.Extend({
+    init: function() {
+      this._super(false);
+    },
+    dance: function() {
+      return this._super();
+    },
+    swingSword: function() {
+      return true;
+    }
+  });
+    
+  var p = new Person(true);
+  var n = new Ninja();
+    
+  assert.equal(p.dance(), true);
+  assert.equal(n.dance(), false);
+  assert.equal(n.swingSword(), true);
+});
+
+QUnit.test('Real World use scenerio testing 2', function (assert) {
+
+  var Vehicle = Class.Create({
+    init: function(wheels) {
+      this.wheels = wheels;
+    }
+  });
+
+  var Truck = Vehicle.Extend({
+    init: function(hp, wheels) {
+      this._super(wheels);
+      this.horsepower = hp;
+
+    },
+    printInfo: function() {
+      console.log('I am a truck and I have ' + this.wheels + ' wheels and ' + this.horsepower + ' hp.');
+    }
+  });
+  
+  var t = new Truck(350, 4);
+  assert.equal(t.horsepower, 350);
+  assert.equal(t.wheels,4);  
+  
 });
