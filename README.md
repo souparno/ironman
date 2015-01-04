@@ -16,7 +16,8 @@ an object oriented javascript Inheritance framework
       this.horsepower = hp;
     },
     printInfo: function() {
-      console.log('I am a truck and I have ' + this.wheels + ' wheels and ' + this.horsepower + ' hp.');
+      console.log('I am a truck and I have ' + this.wheels +
+        ' wheels and ' + this.horsepower + ' hp.');
     }
   });
   
