@@ -13,17 +13,15 @@ var Class = {
 
   Extend: function(o) {
     var _util = {
-      isFunc: function (fn) {
-        if (typeof fn === 'function') {
-          return true;
+      isFunc: function (arr) {
+        var key;
+
+        for(key in arr){
+          if (typeof arr[key] !== 'function') {
+            return false;
+          }
         }
-        return false;
-      },
-      duplicateFunc: function (func1, func2) {
-        if (this.isFunc(func1) && this.isFunc(func2)) {
-          return true;
-        }
-        return false;
+        return true;
       },
       overrideFunc: function (super_fn, base_fn) {
         return function() {
@@ -44,7 +42,7 @@ var Class = {
           func1 = super_obj[property];
           func2 = base_obj[property];
 
-          if (this.duplicateFunc(func1, func2)) {
+          if (this.isFunc([func1, func2])) {
             func1 = this.overrideFunc(func1, func2);
           } else {
             func1 = func2;

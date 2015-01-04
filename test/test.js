@@ -41,10 +41,10 @@ QUnit.test("base class should extend from " +
   "with the base class functions and returning it", function (assert) {
     var test_super_class = Class.Create({
         dance: function() {},
-        laugh: function() {},
+        laugh: function() {}
       }),
       test_base_class = test_super_class.Extend({
-        sing: function() {},
+        sing: function() {}
       }),
       prop_array = [],
       prop;
@@ -79,6 +79,7 @@ QUnit.test('base class methods should not leak into ' +
 
       assert.equal(prop_array.length, 2);
       assert.equal(prop_array[0], 'dance');
+      assert.equal(prop_array[1], 'laugh');
 });
 
 QUnit.test("base class function should append the superclass functions " +
