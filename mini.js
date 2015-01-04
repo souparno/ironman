@@ -43,11 +43,10 @@ var Class = {
           func2 = base_obj[property];
 
           if (this.isFunc([func1, func2])) {
-            func1 = this.overrideFunc(func1, func2);
+            super_obj[property] = this.overrideFunc(func1, func2);
           } else {
-            func1 = func2;
+            super_obj[property] = func2;
           }
-          super_obj[property] = func1;
         }
         return super_obj;
       }

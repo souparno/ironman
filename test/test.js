@@ -101,9 +101,54 @@ QUnit.test("base class function should append the superclass functions " +
         sing: function () {
           
         }        
-      });
-      obj= new test_base_class();
+      }), obj= new test_base_class();
 
+    obj.dance();
+    assert.equal(test_variable, true);
+});
+
+QUnit.test('Should pass parameter to the super class method', function (assert) {
+  var test_variable = false,
+      test_super_class = Class.Create({
+        kick:function () {
+          
+        },
+        dance: function(param1, param2) { 
+         test_variable = param1 + param2;
+        }
+      }),
+      test_base_class = test_super_class.Extend({
+        dance: function () {
+          this._super(2,4);
+        },
+        sing: function () {
+          
+        }        
+      }), obj= new test_base_class();
+      
+    obj.dance();
+    assert.equal(test_variable, 6);
+});
+
+QUnit.test('Should get return values from the super class method', function (assert) {
+  var test_variable = false,
+      test_super_class = Class.Create({
+        kick:function () {
+          
+        },
+        dance: function() { 
+         return true;
+        }
+      }),
+      test_base_class = test_super_class.Extend({
+        dance: function () {
+          test_variable = this._super();
+        },
+        sing: function () {
+          
+        }        
+      }), obj= new test_base_class();
+      
     obj.dance();
     assert.equal(test_variable, true);
 });
