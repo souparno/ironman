@@ -1,6 +1,6 @@
 QUnit.test("Class.create should return a function", function (assert) {
   var klass = Class.Create({});
-  assert.equal(_.isFunction(klass), true);
+  assert.equal(typeof klass === 'function', true);
 });
 
 QUnit.test("Class.create should return a function " +
@@ -11,10 +11,13 @@ QUnit.test("Class.create should return a function " +
 });
 
 QUnit.test("Class.create should call the Extend function", function (assert) {
-  var stub_class_extend = sinon.stub(Class, 'Extend').returns(1);
+  var temp_extend = Class.Extend;
 
+  Class.Extend = function (){
+    return 1;
+  };
   assert.equal(Class.Create({}), 1);
-  stub_class_extend.restore();
+  Class.Extend = temp_extend;
 });
 
 QUnit.test('Class.create should append functions ' +
