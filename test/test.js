@@ -4,12 +4,10 @@ QUnit.test("Class.create should return a function", function (assert) {
 });
 
 QUnit.test("Class.create should return a function " +
-  "with Extend property", function (assert) {
-  var klass = Class.Create({}),
-    prop;
-  for (prop in klass) {
-    assert.equal(prop, 'Extend');
-  }
+  "with Extend propertyof type function", function (assert) {
+  var klass = Class.Create({});
+
+  assert.equal(typeof klass.Extend === 'function', true);
 });
 
 QUnit.test("Class.create should call the Extend function", function (assert) {

@@ -5,10 +5,7 @@ var Class = {
   extending: false,
 
   Create: function(o) {
-    var F = function() {};
-
-    F.Extend = this.Extend;
-    return F.Extend(o);
+    return this.Extend.call(function () {} , o);
   },
 
   Extend: function(o) {
@@ -60,7 +57,7 @@ var Class = {
     F.prototype = _util.mergeObj(new this(), o);
     Class.extending = false;
 
-    F.Extend = this.Extend;
+    F.Extend = Class.Extend;
     return F;
   }
 };
