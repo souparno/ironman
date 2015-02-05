@@ -22,7 +22,7 @@ var Class = (function () {
         overrideFunc: function (super_fn, base_fn) {
           return function () {
             var tmp = this._super,
-                    ret;
+              ret;
 
             this._super = super_fn;
             ret = base_fn.apply(this, arguments);

@@ -214,6 +214,23 @@ QUnit.test("super class constructor should not be called while " +
   assert.equal(test_var, false);
 });
 
+QUnit.test('base class should inherit '+
+  'the super class properties', function (assert) {
+  var SuperClass = Class.Create({
+    init: function () {
+      this.a = 1;
+    }
+  }), SubClass, subclass;
+
+  SubClass = SuperClass.Extend({
+    init: function () {
+      this._super();      
+    }
+  });  
+  subclass = new SubClass();
+  assert.equal(subclass.a, 1);
+});
+
 QUnit.test('Real World use scenerio testing 1', function (assert) {
 
   var Person = Class.Create({
