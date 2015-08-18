@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/souparno/mini.js#readme",
   "devDependencies": {
-    "http-server": "^0.8.0",
-    "mocha": "^2.2.5"
+    "http-server": "^0.8.0"
   }
 }
