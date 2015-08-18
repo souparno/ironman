@@ -1,0 +1,27 @@
+{
+  "name": "mini.js",
+  "version": "1.0.0",
+  "description": "mini.js =======",
+  "main": "mini.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "start": "http-server -a localhost -p 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/souparno/mini.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/souparno/mini.js/issues"
+  },
+  "homepage": "https://github.com/souparno/mini.js#readme",
+  "devDependencies": {
+    "http-server": "^0.8.0",
+    "mocha": "^2.2.5"
+  }
+}
