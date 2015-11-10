@@ -1,6 +1,3 @@
-mini.js
-=======
-
 an object oriented javascript Inheritance framework
 
 <pre>
