@@ -41,21 +41,22 @@ var Class = (function () {
   };
 
   return {
-    extending: false,
+    __extending: false,
     Create: function (o) {
       return this.Extend.call(function () {
       }, o);
     },
-    Extend: function (o) {
+    Extend: function (base_obj) {
       var F = function () {
-        if (!Class.extending && this.init) {
+        if (!Class.__extending && this.init) {
           this.init.apply(this, arguments);
         }
-      };
+      }, super_obj;
 
-      Class.extending = true;
-      F.prototype = _util.mergeObj(new this(), o);
-      Class.extending = false;
+      Class.__extending = true;
+      super_obj = new this();
+      F.prototype = _util.mergeObj(super_obj, base_obj);
+      Class.__extending = false;
 
       F.Extend = Class.Extend;
       return F;
