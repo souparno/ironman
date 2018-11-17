@@ -43,8 +43,7 @@ var Class = (function () {
   return {
     __extending: false,
     Create: function (o) {
-      return this.Extend.call(function () {
-      }, o);
+      return this.Extend.call(null, o);
     },
     Extend: function (base_obj) {
       var F = function () {
