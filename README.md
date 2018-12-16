@@ -1,4 +1,4 @@
-an object oriented javascript Inheritance framework
+a super small javascript Inheritance framework based on the following blog https://johnresig.com/blog/simple-javascript-inheritance/
 
 <pre>
   var Vehicle = Class.Create({
