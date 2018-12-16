@@ -1,4 +1,6 @@
-a super small javascript Inheritance framework based on the following blog https://johnresig.com/blog/simple-javascript-inheritance/
+[![NPM](https://nodei.co/npm/@bonnie/class.png?downloads=true)](https://nodei.co/npm/@bonnie/class/)
+
+a super small javascript Inheritance framework 
 
 <pre>
   var Vehicle = Class.Create({
