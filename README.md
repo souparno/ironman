@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/souparno/Class.js.svg?branch=master)](https://travis-ci.org/souparno/Class.js)
 [![NPM](https://nodei.co/npm/@bonnie/class.png?downloads=true)](https://nodei.co/npm/@bonnie/class/)
 
 a super small javascript Inheritance framework 
