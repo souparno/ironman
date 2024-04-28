@@ -2,7 +2,7 @@
 <br/>
 [![NPM](https://nodei.co/npm/@bonnie/class.png?downloads=true)](https://nodei.co/npm/@bonnie/class/)
 
-a super small javascript Inheritance framework 
+a super small javascript Inheritance framework based out on John Resig blog https://johnresig.com/blog/simple-javascript-inheritance/
 
 <pre>
   var Vehicle = Class.Create({
